@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form th:action="@{${product.productCode}}"   method="post" th:object="${product}">
+<input type="text" th:field="*{productCode}"/>
+<input type="text" th:field="*{productName}"/>
+<select th:field="*{categoryId}">
+<option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}">
+</option>
+</select>
+<input type="submit"/>
+
+
+</form>
+
+
+</body>
+</html>

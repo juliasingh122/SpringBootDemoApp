@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+<tr>
+<th>customerName</th> <th>customerNumber</th> <th>button</th>
+</tr>
+<tr th:each="customer : ${customers}">
+<td th:utext="${customer.customerName}"></td>
+<td th:utext="${customer.customerNumber}"></td>
+<td><a th:href="@{'Customers/' + ${customer.customerNumber}}">edit</a></td>
+</tr>
+</table>
+</body>
+</html>

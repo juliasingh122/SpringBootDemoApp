@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<body>
+<form th:action="@{'Categories/' + ${category.categoryId}}" method="post" th:object="${category}">
+<input type="text" th:field="*{categoryId}"/>
+<input type="text" th:field="*{categoryName}"/>
+<input type="submit"/>
+</form>
+<table>
+<tr>
+<th>productCode</th><th>productName</th>
+</tr>
+<tr th:each="product : ${products}">
+<td th:utext="${product.productCode}"></td>
+<td th:utext="${product.productName}"></td>
+</tr>
+</table>
+
+</body></head></html>
