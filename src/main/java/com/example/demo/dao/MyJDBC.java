@@ -13,7 +13,7 @@ public class MyJDBC {
 		
         
 		try {
-			final String DB_URL = "jdbc:mysql://localhost:3306/jproject";
+			final String DB_URL = "jdbc:mysql://192.168.86.38:3306/jproject";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(DB_URL, "julia2", "j");
 			
