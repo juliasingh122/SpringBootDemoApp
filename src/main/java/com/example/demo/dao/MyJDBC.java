@@ -8,12 +8,14 @@ import java.sql.Statement;
 
 public class MyJDBC {
 	
+	final static String DB_URL = "jdbc:mysql://192.168.86.38:3306/jproject";
+	
 	public static ResultSet executeQuery(String query) {
 		ResultSet resultset = null;
 		
         
 		try {
-			final String DB_URL = "jdbc:mysql://192.168.86.38:3306/jproject";
+			
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(DB_URL, "julia2", "j");
 			
@@ -31,4 +33,14 @@ public class MyJDBC {
 		}
 		return resultset;
 	}
+	public static int executeUpdate(String query) {
+	    try (Connection con = DriverManager.getConnection(DB_URL, "julia2", "j");
+	         Statement stmt = con.createStatement()) {
+	        return stmt.executeUpdate(query);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
 }

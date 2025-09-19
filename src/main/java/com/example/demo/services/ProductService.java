@@ -68,5 +68,10 @@ public class ProductService {
 		}
 		return p;
 	}
+	public void updateProduct(Product product) {
+	    ProductDao pd = new ProductDao();
+	    pd.updateProduct(product);
+	}
+	
 
 }
