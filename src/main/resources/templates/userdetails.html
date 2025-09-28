@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form th:action="@{/users/save}" th:object="${user}" method="post">
+<div>
+<label>User ID:</label>
+<input type="text" th:field="*{id}" readonly/>
+</div>
+<div>
+<label>Username:</label>
+<input type="text" th:field="*{username}" readonly/>
+</div>
+<div>
+<label>Roles:</label>
+<div th:each="role : ${allRoles}">
+<input type="checkbox" th:value="${role.id}" th:field="*{roles}" />
+<span th:text="${role.name}"></span>
+</div>
+</div>
+<div>
+<button type="submit">Save</button>
+</div>
+</form>
+
+
+</body>
+</html>

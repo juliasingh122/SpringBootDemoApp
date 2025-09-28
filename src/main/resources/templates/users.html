@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+<tr>
+<th>userId</th><th>userName</th>
+</tr>
+<tr th:each="user : ${users}">
+<td th:utext="${user.userId}"></td>
+<td th:utext="${user.userName}"></td>
+<td><a th:href="@{'Users/' + ${user.userId}}">edit</a></td>
+</tr>
+</table>
+</body>
+</html>
