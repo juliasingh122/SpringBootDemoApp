@@ -48,6 +48,23 @@ public class RoleService {
         }
         return r;
     }
+    public List<Role> getListbyUserId(String id) {
+        List<Role> roles = new ArrayList<>();
+        RoleDao rd = new RoleDao();
+        ResultSet rs = rd.getListByUserId(id);
+        try {
+            while (rs.next()) {
+                Role r = new Role(
+                        rs.getString(1), // roleId
+                        rs.getString(2)  // roleName
+                );
+                roles.add(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roles;
+    }
 
     public void updateRole(Role role) {
         RoleDao rd = new RoleDao();

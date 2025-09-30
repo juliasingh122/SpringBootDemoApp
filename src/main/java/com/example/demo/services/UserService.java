@@ -7,24 +7,27 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dao.RoleDao;
 import com.example.demo.dao.UserDao;
+import com.example.demo.dao.UserRoleDao;
 import com.example.demo.domain.User;
+import com.example.demo.domain.WUser;
 
 @Service
 public class UserService {
 
     public List<User> getList() {
         List<User> users = new ArrayList<>();
+
         UserDao ud = new UserDao();
+
         ResultSet rs = ud.getList();
+
         try {
             while (rs.next()) {
-                // adjust columns according to your DB schema
-                User u = new User(
-                        rs.getString(1),  // userId
-                        rs.getString(2)   // userName
-                );
+                User u = new User(rs.getString(1), rs.getString(2));
                 users.add(u);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,5 +56,10 @@ public class UserService {
     public void updateUser(User user) {
         UserDao ud = new UserDao();
         ud.updateUser(user);
+    }
+    
+    public void updateUserRole(WUser wu) {
+    	UserRoleDao urd = new UserRoleDao();
+    	urd.updateUserRole(wu);
     }
 }

@@ -7,6 +7,10 @@ public class User {
     String userId;
     String userName;
     List<Role> roles;
+    
+    public User() {
+    	
+    }
 
     public User(String userId, String userName) {
         this.userId = userId;
