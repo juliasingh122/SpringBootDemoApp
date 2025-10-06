@@ -11,7 +11,7 @@
 <tr>
 <th>productCode</th><th>productName</th>
 </tr>
-<tr th:each="product : ${products}">
+<tr th:each="product : ${category.products}">
 <td th:utext="${product.productCode}"></td>
 <td th:utext="${product.productName}"></td>
 </tr>
