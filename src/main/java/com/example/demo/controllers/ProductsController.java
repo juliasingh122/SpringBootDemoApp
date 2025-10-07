@@ -39,6 +39,7 @@ public class ProductsController {
 	
 	@PostMapping("/{id}")
 	public String postProductdetails(@PathVariable("id") String id, @ModelAttribute("product") Product product, Model model) {
+		ps.updateProduct(product);
 		return "productdetails";
 	}
 }

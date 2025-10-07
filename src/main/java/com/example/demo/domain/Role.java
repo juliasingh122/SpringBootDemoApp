@@ -1,7 +1,6 @@
 package com.example.demo.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Role {
@@ -67,6 +66,4 @@ public class Role {
             return false;
         return true;
     }  
-	
-
 }

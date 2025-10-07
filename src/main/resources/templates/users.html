@@ -7,6 +7,7 @@
 <body>
 <table>
 <tr>
+<<<<<<< HEAD
 <th>productCode</th><th>productName</th><th>productLine</th><th>productScale</th><th>productVendor</th><th>productDescription</th><th>quantityInStock</th><th>buyPrice</th><th>MSRP</th>
 </tr>
 <tr th:each="user : ${users}">
@@ -18,5 +19,15 @@
 
 
 
+=======
+<th>userId</th><th>userName</th>
+</tr>
+<tr th:each="user : ${users}">
+<td th:utext="${user.userId}"></td>
+<td th:utext="${user.userName}"></td>
+<td><a th:href="@{'Users/' + ${user.userId}}">edit</a></td>
+</tr>
+</table>
+>>>>>>> master
 </body>
 </html>

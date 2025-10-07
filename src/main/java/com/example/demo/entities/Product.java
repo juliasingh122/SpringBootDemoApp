@@ -2,7 +2,7 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 
 
-@Entity
+//s@Entity
 public class Product {
 	
 	@Id

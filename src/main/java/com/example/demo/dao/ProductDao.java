@@ -27,8 +27,8 @@ public class ProductDao {
 	}
 	
 	public void updateProduct(Product product) {
-		String sql = "UPDATE productName='" + product.getProductName() + "', categoryId=" + product.getCategoryId() + " WHERE productCode="+ product.getProductCode();
-		MyJDBC.executeQuery(sql);
+		String sql = "UPDATE products SET productName='" + product.getProductName() + "', categoryId=" + product.getCategoryId() + " WHERE productCode='" + product.getProductCode() + "'";
+		MyJDBC.executeUpdate(sql);
 		return;
 	}
 

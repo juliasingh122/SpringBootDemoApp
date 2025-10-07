@@ -27,9 +27,10 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
-
+import com.example.demo.services.ModuleService;
 //import org.springframework.security.web.util.matcher.;
 import com.example.demo.services.UserService;
+import com.example.demo.domain.Module;
 
 @Configuration
 @EnableWebSecurity
@@ -38,69 +39,25 @@ public class SecurityConfiguration{
 	
 	@Autowired
 	UserService userService;
-	/*
-	//Static 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests( auth -> auth
-				.requestMatchers("/public/**").permitAll() // allow public access
-				.requestMatchers("/home/**").permitAll() //allow public access
-				.requestMatchers("/Products/**").hasAnyRole("Admins") //allow only admin roles
-				.anyRequest().authenticated() //authenticate all other resource
-				)
-		/*.formLogin(frm->frm.loginPage("/login")
-						.defaultSuccessUrl("/home", true)
-						.failureUrl("/login?error=true")
-						.permitAll()
-						);*/
-	/*	.formLogin(Customizer.withDefaults());
-				
-		return http.build();
-		
-	}*/
+	@Autowired 
+	ModuleService moduleService;
 	
 
-
-	
-	//Dynamic
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		//PathPatternRequestMatcher matcher = new PathPatternRequestMatcher(null, matcher)
 		
-		List<DynaRules> dynaRules = new ArrayList<DynaRules>();
-		
-		dynaRules.add(new DynaRules("/admin/**",new ArrayList<String>(Arrays.asList("Admins","Users","Operators"))));
-		dynaRules.add(new DynaRules("/Products/**",new ArrayList<String>(Arrays.asList("Admins","Users"))));
-		dynaRules.add(new DynaRules("/Categories/**",new ArrayList<String>(Arrays.asList("Users","Operators"))));
-		//String[] roles = {"Users","Operators"};
-		
-		
-	
-		
-//		http.authorizeHttpRequests( auth -> auth
-//			.requestMatchers("/home").permitAll()
-//			.anyRequest().authenticated()
-//			).formLogin(
-//					/*frm->frm
-//				.loginPage("/login")
-//				.defaultSuccessUrl("/home")
-//				.failureUrl("/login?error=true")
-//				.permitAll()*/
-//					
-//					Customizer.withDefaults()
-//			).logout(frm -> frm
-//					.logoutUrl("/logout")
-//					);
-		
-			
+		List<Module> modules  = moduleService.getList();		
 
 		http.authorizeHttpRequests( auth -> {
-			dynaRules.forEach(rule ->{
+			modules.forEach(rule ->{
 				//auth.requestMatchers(rule.getPath()).access(new WebExpressionAuthorizationManager("hasAnyAuthority('" + String.join( "','", rule.roles) + "')")); //Do not put prefix it works
 				//auth.requestMatchers(rule.getPath()).access(new WebExpressionAuthorizationManager("hasAnyRole('" + String.join( "','", rule.roles) + "')")); // this works put the user role has prefix 'ROLE_..'
 				//auth.requestMatchers(rule.getPath()).hasAnyRole(String.join( ",", rule.roles )); //This doesn't work because is is one string not array of string
-				auth.requestMatchers(rule.getPath()).hasAnyRole(rule.getRoles().toArray(new String[0])); //This shoud work
+				//auth.requestMatchers(rule.getPath()).hasAnyRole(rule.getRoles().toArray(new String[0])); //This shoud work but if Role is string not object
+				List<String> roles = new ArrayList<String>();
+				rule.getRoles().forEach(role -> roles.add(role.getName()));
+				auth.requestMatchers(rule.getPath()).hasAnyRole(roles.toArray(new String[0])); //This shoud work
 			});
 			auth.anyRequest().authenticated();
 		}).formLogin(Customizer.withDefaults());
@@ -109,31 +66,6 @@ public class SecurityConfiguration{
 		
 	}
 
-	
-	
-	
-	class DynaRules{
-		
-		public DynaRules(String path, List<String> roles) {
-			this.path=path;
-			this.roles=roles;
-			
-		}
-		String path;
-		public String getPath() {
-			return path;
-		}
-		public void setPath(String path) {
-			this.path = path;
-		}
-		public List<String> getRoles() {
-			return roles;
-		}
-		public void setRoles(List<String> roles) {
-			this.roles = roles;
-		}
-		List<String> roles;
-	}
 	
 	@Bean
 	@Order(0)

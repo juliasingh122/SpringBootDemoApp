@@ -9,6 +9,10 @@ public class User {
 	String name;
 	String password;
 	
+	public User() {
+		
+	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -42,6 +46,4 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
-
 }

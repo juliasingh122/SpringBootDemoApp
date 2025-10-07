@@ -13,6 +13,16 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.LoginUser;
 import com.example.demo.domain.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.dao.UserDao;
+import com.example.demo.dao.UserRoleDao;
+import com.example.demo.domain.WUser;
+
+
 @Service
 public class UserService implements UserDetailsService{
 	
@@ -20,67 +30,79 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-	
+	@Autowired
+	RoleService rs;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 			return new LoginUser(getUserByName(username));
 	}
 	
-	
-	
-	
-	
-	RoleService rs = new RoleService();
-	
-	List<User> users = new ArrayList<User>();
 		
-	
-	public List<User> getUsers() {
-		createUsers();
-		return users;
-		
-	}
-
-	public void createUsers() {
-		users.add(new User("1","Puru", passwordEncoder.encode("Puru")));
-		users.add(new User("1","Olga", passwordEncoder.encode("Olga")));
-	}
-
-    public User getUserById(String id) {
-    	createUsers();
-		User user;
-		
-		if(id.equals("1")) {
-			
-			user =getUsers().stream().filter(u-> u.getId().equals(id)).toList().get(0);
-			user.getRoles().add(rs.getRoleById("1"));
-			user.getRoles().add(rs.getRoleById("3"));
-		}
-		else {
-			user =getUsers().stream().filter(u-> u.getId().equals(id)).toList().get(0);
-			user.getRoles().add(rs.getRoleById("2"));
-			user.getRoles().add(rs.getRoleById("3"));
-			user.getRoles().add(rs.getRoleById("4"));
-			
-		}
-		
-		return user;
-
-		
-	}
     
     public User getUserByName(String name) {
-		
-		if(name.equals("Puru")) {
-			
-			return getUserById("1");
+    	UserDao ud = new UserDao();
+        ResultSet rs = ud.getUser(name);
+        try {
+			rs.next();
+			User u = new User(rs.getString(1), rs.getString(2), rs.getString(3));
+			rs.close();
+			return u;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else {
-			return getUserById("2");
-			
-		}
-		
-	}
+		return null;
+        
+    }	
 
+		
+    public List<User> getList() {
+        List<User> users = new ArrayList<>();
+
+        UserDao ud = new UserDao();
+
+        ResultSet rs = ud.getList();
+
+        try {
+            while (rs.next()) {
+                User u = new User(rs.getString(1), rs.getString(2), rs.getString(3));
+                users.add(u);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public User getUserById(String id) {
+        UserDao ud = new UserDao();
+        ResultSet rs = ud.getUser(id);
+
+        User u = null;
+        try {
+            if (rs.next()) {
+                u = new User(
+                        rs.getString(1), // userId
+                        rs.getString(2),  // userName
+                        rs.getString(3)
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
+
+    public void updateUser(User user) {
+        UserDao ud = new UserDao();
+        ud.updateUser(user);
+    }
+    
+    public void updateUserRole(WUser wu) {
+    	UserRoleDao urd = new UserRoleDao();
+    	urd.updateUserRole(wu);
+    }
 }

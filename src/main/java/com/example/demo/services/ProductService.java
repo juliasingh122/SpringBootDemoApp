@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.ProductDao;
@@ -68,5 +67,10 @@ public class ProductService {
 		}
 		return p;
 	}
+	public void updateProduct(Product product) {
+	    ProductDao pd = new ProductDao();
+	    pd.updateProduct(product);
+	}
+	
 
 }
